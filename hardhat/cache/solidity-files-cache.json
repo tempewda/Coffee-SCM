@@ -1,0 +1,42 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "E:\\Media\\Documents\\College\\Acads Trichy\\Projects\\Solidity\\Coffee SCM\\hardhat\\contracts\\Admin.sol": {
+      "lastModificationDate": 1750071126414,
+      "contentHash": "dfa8a1b12b405e83fd7af7dd1dee7a42",
+      "sourceName": "contracts/Admin.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "Admin",
+        "stakeholders"
+      ]
+    }
+  }
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoffeeTrace SCM</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        /* Simple scrollbar styling for a cleaner look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Connection View - Centered, shown before connecting -->
+    <div id="connectView" class="flex items-center justify-center min-h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-md text-center max-w-md w-full">
+            <h1 class="text-3xl font-bold mb-2 text-gray-800">CoffeeTrace SCM</h1>
+            <p class="text-gray-500 mb-6">A Decentralized Supply Chain Manager</p>
+            <button id="connectButton" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-300">
+                Connect to MetaMask
+            </button>
+        </div>
+    </div>
+
+    <!-- Dashboard View - Hidden until connected -->
+    <div id="dashboardView" class="hidden flex h-screen">
+        
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 text-white flex flex-col p-4">
+            <h1 class="text-2xl font-bold mb-8 border-b border-gray-700 pb-4">CoffeeTrace</h1>
+            
+            <div class="flex-grow">
+                <h2 class="text-sm font-semibold text-gray-400 mb-2">STATUS</h2>
+                <div class="bg-green-500/20 text-green-300 p-3 rounded-lg mb-6">
+                    <p class="font-bold">Connected</p>
+                    <p id="userRole" class="text-xs text-green-400">Loading Role...</p>
+                </div>
+                
+                <h2 class="text-sm font-semibold text-gray-400 mb-2">ACCOUNT</h2>
+                <p id="walletAddress" class="font-mono text-sm break-words mb-6">N/A</p>
+
+                <!-- Farmer-specific Info in Sidebar -->
+                <div id="farmerInfoSidebar" class="hidden">
+                    <h2 class="text-sm font-semibold text-gray-400 mb-2">FARMER DETAILS</h2>
+                    <div class="bg-gray-700 p-3 rounded-lg">
+                        <p class="font-bold" id="sidebarFarmerName">Loading...</p>
+                        <p class="text-xs text-gray-300">Estate: <span id="sidebarEstateName">Loading...</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <button id="disconnectButton" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200">
+                Disconnect
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 overflow-y-auto">
+            
+            <!-- Admin Dashboard -->
+            <div id="adminSection" class="hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">Register New Farmer</h2>
+                        <div class="space-y-4">
+                            <input type="text" id="farmerAddressInput" placeholder="Farmer Address (0x...)" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+                            <input type="number" id="farmerIDInput" placeholder="Farmer ID" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+                            <input type="text" id="farmerNameInput" placeholder="Farmer Name" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+                            <input type="text" id="estateNameInput" placeholder="Estate Name" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+                            <button id="addFarmerButton" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md shadow-md transition duration-200">Add Farmer</button>
+                        </div>
+                        <p id="adminFeedback" class="mt-4 text-sm text-center font-medium"></p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">System Statistics</h2>
+                        <p class="text-gray-600">Total Farmers Registered:</p>
+                        <p id="farmerCountDisplay" class="text-4xl font-bold text-blue-600">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Farmer Dashboard -->
+            <div id="farmerSection" class="hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Farmer Dashboard</h1>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-1 bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">Register New Product</h2>
+                        <div class="space-y-4">
+                            <input type="number" id="productIDInput" placeholder="Product ID (e.g., 101)" class="w-full p-3 border border-gray-300 rounded-md" />
+                            <input type="date" id="pluckingDateInput" class="w-full p-3 border border-gray-300 rounded-md" />
+                            <input type="number" id="harvestAmtKgInput" placeholder="Harvest Amount (kg)" class="w-full p-3 border border-gray-300 rounded-md" />
+                            <div>
+                                <label for="coffeeTypeInput" class="block text-sm font-medium text-gray-700 text-left mb-1">Select Coffee Type</label>
+                                <select id="coffeeTypeInput" class="w-full p-3 border border-gray-300 rounded-md">
+                                    <option value="1">Robusta</option><option value="2">Arabica</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="processingMethodInput" class="block text-sm font-medium text-gray-700 text-left mb-1">Select Processing Method</label>
+                                <select id="processingMethodInput" class="w-full p-3 border border-gray-300 rounded-md">
+                                    <option value="1">Dry</option><option value="2">Honey</option><option value="3">Wet</option>
+                                </select>
+                            </div>
+                            <button id="addProductButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md shadow-md">Add Product</button>
+                        </div>
+                        <p id="farmerFeedback" class="mt-4 text-sm text-center font-medium"></p>
+                    </div>
+                    <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">Your Registered Products</h2>
+                        <div id="productListContainer" class="max-h-96 overflow-y-auto">
+                            <p id="productListStatus">Loading products...</p>
+                            <ul id="productListUl" class="space-y-2"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Dashboard -->
+            <div id="clientSection" class="hidden">
+                 <h1 class="text-3xl font-bold text-gray-800 mb-6">Public Inspector</h1>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Card 1: Trace a Product -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">Verify a Product by ID</h2>
+                        <div class="flex space-x-2">
+                            <input type="number" id="traceProductIDInput" placeholder="Enter Product ID..." class="w-full p-3 border border-gray-300 rounded-md"/>
+                            <button id="traceProductButton" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md">Trace</button>
+                        </div>
+                        <!-- Result Area for Trace -->
+                        <div id="traceResult" class="mt-4 text-left text-sm"></div>
+                    </div>
+                    <!-- Card 2: Browse by Farmer -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">Browse by Farmer Address</h2>
+                         <div class="flex space-x-2">
+                            <input type="text" id="browseFarmerAddressInput" placeholder="Enter Farmer Address..." class="w-full p-3 border border-gray-300 rounded-md"/>
+                            <button id="browseFarmerButton" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded-md">Browse</button>
+                        </div>
+                        <!-- Result Area for Browse -->
+                        <div id="browseResult" class="mt-4 text-left text-sm"></div>
+                    </div>
+                 </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL (No changes needed) -->
+    <div id="productModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+        <div class="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Product Details</h3>
+                <div id="modalSpinner" class="hidden my-4"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div></div>
+                <div id="modalContent" class="mt-2 px-7 py-3 text-left space-y-2">
+                    <p class="text-sm text-gray-700"><strong>ID:</strong> <span id="modalProductID" class="font-mono"></span></p>
+                    <p class="text-sm text-gray-700"><strong>Plucking Date:</strong> <span id="modalPluckingDate" class="font-mono"></span></p>
+                    <p class="text-sm text-gray-700"><strong>Harvest Amount:</strong> <span id="modalHarvestAmount" class="font-mono"></span> kg</p>
+                    <p class="text-sm text-gray-700"><strong>Coffee Type:</strong> <span id="modalCoffeeType" class="font-mono"></span></p>
+                    <p class="text-sm text-gray-700"><strong>Processing Method:</strong> <span id="modalProcessingMethod" class="font-mono"></span></p>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="modalCloseButton" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script> 
+    <script src="app.js"></script>
+</body>
+</html>

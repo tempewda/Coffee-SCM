@@ -1,0 +1,287 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_farmerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_farmerID",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_farmerName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_estateName",
+						"type": "string"
+					}
+				],
+				"name": "addFarmer",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_productID",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_pluckingDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum stakeholders.CoffeeType",
+						"name": "_coffeeType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_harvestAmtKg",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum stakeholders.ProcessingMethod",
+						"name": "_processingMethod",
+						"type": "uint8"
+					}
+				],
+				"name": "addProduct",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "admin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getFarmerCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_farmerAddress",
+						"type": "address"
+					}
+				],
+				"name": "getFarmerDetails",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "__farmerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_farmerID",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_farmerName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_estateName",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_farmerAddress",
+						"type": "address"
+					}
+				],
+				"name": "getProductCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "productCount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_productID",
+						"type": "uint256"
+					}
+				],
+				"name": "getProductDetails",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "productID",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "pluckingDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "registeredBy",
+						"type": "address"
+					},
+					{
+						"internalType": "enum stakeholders.CoffeeType",
+						"name": "coffeeType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "harvestAmtKg",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum stakeholders.ProcessingMethod",
+						"name": "processingMethod",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_farmerAddress",
+						"type": "address"
+					}
+				],
+				"name": "getProductList",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "productIDList",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_farmerAddress",
+						"type": "address"
+					}
+				],
+				"name": "isRegisteredFarmer",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_productID",
+						"type": "uint256"
+					}
+				],
+				"name": "isRegisteredProduct",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Admin.sol": "Admin"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Admin.sol": {
+			"keccak256": "0x9ddc6dc0b4f10b31f60cd79e9243c5afefc7715cb70ea5c24d5a87a5cf37185d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://36bf26efcef0f62794e8dbb0ea034192efb50656306f0f179ebbd1853b06c2ed",
+				"dweb:/ipfs/QmcovjNMhcsrG9hX4xR2e39TJkXtbxHNwSjWSjybc9JCBq"
+			]
+		}
+	},
+	"version": 1
+}
